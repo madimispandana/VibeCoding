@@ -715,3 +715,415 @@
 </script>
 </body>
 </html>
+Quick Setup Guide
+GitHub Repository: Create a new repository (like portfolio or username.github.io).
+Commit the File: Create a file named index.html, paste all the code above into it, and save.
+Turn on Pages: Go to your repository's Settings > Pages. Under "Build and deployment", ensure the source is "Deploy from a branch" and select main (or whichever branch you used).
+Go Live! After a minute or two, your site will be live at https://<username>.github.io/<repo-name>/.
+This one file is totally self-contained, so you don't have to worry about managing images or separate script files. Let me know if you need help wiring up a real resume PDF or project links! 🚀
+
+6:43 PM
+screencapture-madimispandana-github-io-VibeCoding-2026-05-03-18_54_29.png
+I did that but all the UI is lost.
+6:56 PM
+I see exactly what happened! The code I gave you earlier had some hidden "newline" characters (\n) that got pasted as literal text instead of actual line breaks. Because of that, the JavaScript broke, and the browser is just showing the raw template tags (like {{ typedText }}) instead of rendering the beautiful UI.
+
+I’ve cleaned it up completely. Please delete everything in your current index.html and replace it with this fresh, clean code. This will fix the layout and bring back all the animations:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spandana Madimi — Full Stack .NET Developer</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Font Awesome 6 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bgmain:   '#0f0e17',
+          card:     '#1a1a2e',
+          sidebar:  '#16213e',
+          teal:     '#00d4aa',
+          violet:   '#7c3aed',
+          violet2:  '#a855f7',
+          amber1:   '#f59e0b',
+        },
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+          code: ['"Fira Code"', 'ui-monospace', 'monospace'],
+        },
+        boxShadow: {
+          tealglow: '0 0 16px #00d4aa44',
+          violetglow: '0 0 16px #7c3aed55',
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  html, body { background-color: #0f0e17; color: #e5e7eb; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+  ::selection { background: #00d4aa44; color: #fff; }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #0f0e17; }
+  ::-webkit-scrollbar-thumb { background: #1a1a2e; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .cursor-blink::after {
+    content: '|';
+    margin-left: 2px;
+    color: #00d4aa;
+    animation: blink 1s steps(2, start) infinite;
+  }
+  @keyframes blink { to { visibility: hidden; } }
+
+  .blob {
+    position: absolute;
+    filter: blur(60px);
+    opacity: 0.35;
+    border-radius: 9999px;
+    pointer-events: none;
+    animation: floatBlob 14s ease-in-out infinite;
+  }
+  @keyframes floatBlob {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50%      { transform: translate(30px,-20px) scale(1.1); }
+  }
+
+  .skill-bar-fill {
+    width: 0%;
+    transition: width 1.4s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .timeline-line {
+    background: linear-gradient(to bottom, #00d4aa, #7c3aed);
+  }
+
+  .pill { font-family: 'Fira Code', monospace; font-size: 11px; }
+
+  .card-hover:hover { box-shadow: 0 0 16px #00d4aa44; transform: translateY(-2px); }
+  .card-hover { transition: box-shadow .3s ease, transform .3s ease; }
+
+  .avatar-ring { box-shadow: 0 0 0 3px #00d4aa, 0 0 24px #00d4aa44; }
+
+  @media (max-width: 1023px) {
+    .sidebar-fixed { position: static !important; width: 100% !important; height: auto !important; }
+  }
+</style>
+</head>
+<body class="bg-bgmain text-gray-200 antialiased">
+
+<div id="app">
+  <div class="flex flex-col lg:flex-row min-h-screen">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar-fixed bg-sidebar lg:w-80 lg:fixed lg:top-0 lg:left-0 lg:h-screen lg:overflow-y-auto border-r border-white/5 p-8 flex flex-col items-center text-center">
+      <div class="relative mt-2 mb-5">
+        <div class="w-36 h-36 rounded-full avatar-ring bg-gradient-to-br from-teal/30 to-violet/30 flex items-center justify-center overflow-hidden">
+          <span class="text-5xl font-bold text-teal font-code">SM</span>
+        </div>
+        <span class="absolute bottom-2 right-2 w-4 h-4 rounded-full bg-teal border-2 border-sidebar animate-pulse"></span>
+      </div>
+
+      <h1 class="text-2xl font-bold text-white tracking-tight">Spandana Madimi</h1>
+      <span class="mt-2 inline-block text-xs font-code px-3 py-1 rounded-full bg-violet/15 border border-violet/40 text-violet2">
+        Full Stack .NET Developer
+      </span>
+
+      <div class="w-full my-6 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+      <ul class="w-full space-y-3 text-sm text-gray-300">
+        <li v-for="item in contactInfo" :key="item.label" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors">
+          <span class="w-8 h-8 flex items-center justify-center rounded-md bg-bgmain border border-white/10 text-teal">
+            <i :class="item.icon"></i>
+          </span>
+          <a v-if="item.href" :href="item.href" target="_blank" rel="noopener" class="text-left truncate hover:text-teal transition-colors">{{ item.value }}</a>
+          <span v-else class="text-left truncate">{{ item.value }}</span>
+        </li>
+      </ul>
+
+      <button @click="downloadResume" class="mt-7 w-full py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-violet to-violet2 hover:shadow-violetglow transition-shadow">
+        <i class="fa-solid fa-download mr-2"></i> Download Resume
+      </button>
+
+      <div class="mt-6 flex gap-3">
+        <a v-for="s in socials" :key="s.label" :href="s.href" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-bgmain border border-white/10 flex items-center justify-center text-gray-300 hover:text-teal hover:border-teal hover:shadow-tealglow transition-all">
+          <i :class="s.icon"></i>
+        </a>
+      </div>
+      <p class="mt-auto pt-8 text-xs text-gray-500 font-code">&copy; {{ year }} Spandana Madimi</p>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 lg:ml-80 min-h-screen">
+      <nav class="sticky top-0 z-30 bg-bgmain/85 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-5xl mx-auto px-6">
+          <ul class="flex gap-1 sm:gap-2 overflow-x-auto no-scrollbar">
+            <li v-for="tab in tabs" :key="tab.id">
+              <button @click="activeTab = tab.id" :class="['px-4 py-4 text-sm font-medium whitespace-nowrap relative transition-colors', activeTab === tab.id ? 'text-teal' : 'text-gray-400 hover:text-gray-200']">
+                <i :class="tab.icon" class="mr-2 text-xs"></i>{{ tab.label }}
+                <span v-if="activeTab === tab.id" class="absolute left-3 right-3 -bottom-px h-0.5 bg-teal rounded-t"></span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="max-w-5xl mx-auto px-6 py-12">
+        <section>
+          <!-- ABOUT -->
+          <div v-show="activeTab === 'about'" class="space-y-14">
+            <div class="relative overflow-hidden rounded-2xl bg-card border border-white/5 p-8 md:p-12 reveal">
+              <div class="blob bg-teal top-[-60px] left-[-40px] w-64 h-64"></div>
+              <div class="blob bg-violet bottom-[-80px] right-[-40px] w-80 h-80"></div>
+              <p class="relative font-code text-teal text-sm mb-3">&gt; whoami</p>
+              <h2 class="relative text-3xl md:text-5xl font-extrabold text-white leading-tight">
+                <span :class="{ 'cursor-blink': typewriterActive }">{{ typedText }}</span>
+              </h2>
+              <p class="relative mt-3 font-code text-sm md:text-base text-gray-400">Full Stack Developer · .NET · Vue.js · Azure</p>
+              <p class="relative mt-6 text-gray-300 leading-relaxed max-w-2xl">
+                Full Stack Developer with <span class="text-teal font-semibold">3.6+ years</span> experience building scalable applications using C#, .NET, Vue.js, and Azure.
+              </p>
+              <div class="relative mt-8 flex flex-wrap gap-3">
+                <button @click="activeTab='projects'" class="px-6 py-3 rounded-lg bg-teal text-bgmain font-semibold hover:shadow-tealglow transition-shadow">View My Work</button>
+                <button @click="activeTab='contact'" class="px-6 py-3 rounded-lg border border-violet text-violet2 font-semibold hover:bg-violet/15 transition-all">Contact Me</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 reveal">
+              <div v-for="s in stats" :key="s.label" class="card-hover rounded-xl bg-card border border-white/5 p-5 text-center">
+                <div class="text-2xl md:text-3xl font-extrabold text-teal">{{ s.value }}</div>
+                <div class="mt-1 text-xs text-gray-400 uppercase tracking-wider">{{ s.label }}</div>
+              </div>
+            </div>
+
+            <div class="reveal">
+              <h3 class="text-xl font-bold text-white mb-6"><span class="text-teal">#</span> What I Do</h3>
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div v-for="w in whatIDo" :key="w.title" class="card-hover rounded-xl bg-card border border-white/5 p-6 text-left">
+                  <div class="w-12 h-12 rounded-lg bg-violet/15 border border-violet/30 flex items-center justify-center text-violet2 text-xl"><i :class="w.icon"></i></div>
+                  <h4 class="mt-4 text-lg font-semibold text-white">{{ w.title }}</h4>
+                  <p class="mt-2 text-sm text-gray-400">{{ w.desc }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SKILLS -->
+          <div v-show="activeTab === 'skills'" class="space-y-10">
+            <div class="reveal">
+              <p class="font-code text-teal text-sm mb-2">&gt; skills.list()</p>
+              <h2 class="text-3xl md:text-4xl font-extrabold text-white">Technical Skills</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-5 reveal">
+              <div v-for="g in skillGroups" :key="g.title" class="card-hover rounded-xl bg-card border border-white/5 p-6 text-left">
+                <h4 class="text-sm uppercase tracking-widest text-violet2 font-semibold mb-4">{{ g.title }}</h4>
+                <div class="flex flex-wrap gap-2">
+                  <span v-for="item in g.items" :key="item" class="pill px-3 py-1.5 rounded-md bg-bgmain border border-white/10 text-gray-200 hover:text-teal transition-colors">{{ item }}</span>
+                </div>
+              </div>
+            </div>
+            <div id="skillbars" class="rounded-xl bg-card border border-white/5 p-6 md:p-8 reveal text-left">
+              <h4 class="text-sm uppercase tracking-widest text-violet2 font-semibold mb-6">Proficiency</h4>
+              <div class="space-y-6">
+                <div v-for="sb in skillBars" :key="sb.label">
+                  <div class="flex justify-between text-sm mb-2"><span>{{ sb.label }}</span><span class="text-teal">{{ sb.level }}%</span></div>
+                  <div class="h-2 rounded-full bg-bgmain overflow-hidden">
+                    <div class="h-full rounded-full bg-gradient-to-r from-teal to-violet skill-bar-fill" :style="{ width: skillBarsAnimated ? sb.level + '%' : '0%' }"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EXPERIENCE -->
+          <div v-show="activeTab === 'experience'" class="space-y-10">
+            <div class="reveal"><h2 class="text-3xl md:text-4xl font-extrabold text-white">Experience</h2></div>
+            <div class="relative pl-8 reveal">
+              <div class="absolute left-2 top-2 bottom-2 w-0.5 timeline-line rounded-full"></div>
+              <div v-for="(exp, i) in experiences" :key="i" class="relative mb-10 text-left">
+                <span class="absolute -left-[29px] top-2 w-4 h-4 rounded-full bg-violet border-2 border-bgmain"></span>
+                <div class="card-hover rounded-xl bg-card border border-white/5 p-6">
+                  <h3 class="text-lg font-bold text-white">{{ exp.role }}</h3>
+                  <p class="text-teal font-medium">{{ exp.company }} · Client: {{ exp.client }}</p>
+                  <p class="mt-1 text-xs text-gray-500">{{ exp.period }} | {{ exp.location }}</p>
+                  <ul class="mt-5 space-y-2">
+                    <li v-for="(b, bi) in exp.bullets" :key="bi" class="flex gap-3 text-sm text-gray-300"><i class="fa-solid fa-angle-right text-teal mt-1"></i><span>{{ b }}</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PROJECTS -->
+          <div v-show="activeTab === 'projects'" class="space-y-10">
+            <div class="reveal"><h2 class="text-3xl md:text-4xl font-extrabold text-white">Featured Projects</h2></div>
+            <div class="grid md:grid-cols-2 gap-5 reveal">
+              <article v-for="p in projects" :key="p.name" class="card-hover rounded-xl bg-card border border-white/5 p-6 flex flex-col text-left">
+                <h3 class="text-lg font-bold text-white"><span class="mr-2">{{ p.emoji }}</span>{{ p.name }}</h3>
+                <p class="mt-3 text-sm text-gray-400 flex-1">{{ p.desc }}</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span v-for="t in p.tech" :key="t" class="pill px-2.5 py-1 rounded bg-violet/15 border border-violet/30 text-violet2">{{ t }}</span>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- CONTACT -->
+          <div v-show="activeTab === 'contact'" class="space-y-10">
+            <div class="reveal"><h2 class="text-3xl md:text-4xl font-extrabold text-white">Contact Me</h2></div>
+            <div class="grid md:grid-cols-5 gap-6 reveal">
+              <div class="md:col-span-3 rounded-xl bg-card border border-white/5 p-6 md:p-8 text-left">
+                <div class="space-y-4">
+                  <input v-model="form.name" type="text" placeholder="Your name" class="w-full px-4 py-3 rounded-md bg-bgmain border border-white/10 text-white outline-none focus:border-teal transition-colors" />
+                  <input v-model="form.email" type="email" placeholder="Email address" class="w-full px-4 py-3 rounded-md bg-bgmain border border-white/10 text-white outline-none focus:border-teal transition-colors" />
+                  <textarea v-model="form.message" rows="5" placeholder="Your message" class="w-full px-4 py-3 rounded-md bg-bgmain border border-white/10 text-white outline-none focus:border-teal transition-colors resize-none"></textarea>
+                  <button @click="sendMessage" class="w-full py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-violet to-violet2 transition-shadow">Send Message</button>
+                </div>
+              </div>
+              <div class="md:col-span-2 space-y-4 text-left">
+                <div v-for="c in contactCards" :key="c.label" class="card-hover flex items-center gap-4 rounded-xl bg-card border border-white/5 p-5">
+                  <div class="w-11 h-11 rounded-lg bg-violet/15 border border-violet/30 flex items-center justify-center text-violet2"><i :class="c.icon"></i></div>
+                  <div><p class="text-xs text-gray-500 uppercase">{{ c.label }}</p><p class="text-sm text-white">{{ c.value }}</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+  const { createApp, ref, reactive, onMounted, watch, nextTick } = Vue;
+  createApp({
+    setup() {
+      const activeTab = ref('about');
+      const year = new Date().getFullYear();
+      const typedText = ref('');
+      const typewriterActive = ref(true);
+      const skillBarsAnimated = ref(false);
+
+      const tabs = [
+        { id: 'about', label: 'About', icon: 'fa-solid fa-user' },
+        { id: 'skills', label: 'Skills', icon: 'fa-solid fa-code' },
+        { id: 'experience', label: 'Experience', icon: 'fa-solid fa-briefcase' },
+        { id: 'projects', label: 'Projects', icon: 'fa-solid fa-diagram-project' },
+        { id: 'contact', label: 'Contact', icon: 'fa-solid fa-envelope' }
+      ];
+
+      const contactInfo = [
+        { label: 'Email', icon: 'fa-solid fa-envelope', value: 'madimi.spandana@gmail.com', href: 'mailto:madimi.spandana@gmail.com' },
+        { label: 'LinkedIn', icon: 'fa-brands fa-linkedin', value: 'LinkedIn', href: 'https://linkedin.com' }
+      ];
+
+      const socials = [
+        { label: 'LinkedIn', icon: 'fa-brands fa-linkedin-in', href: 'https://linkedin.com' },
+        { label: 'GitHub', icon: 'fa-brands fa-github', href: 'https://github.com' }
+      ];
+
+      const stats = [
+        { value: '3.6+', label: 'Years Exp' },
+        { value: '25+', label: 'Features' },
+        { value: '10+', label: 'APIs' },
+        { value: '6', label: 'Certs' }
+      ];
+
+      const whatIDo = [
+        { title: 'Backend Dev', icon: 'fa-solid fa-gears', desc: 'REST APIs, .NET, C# — clean architecture.' },
+        { title: 'Cloud & DevOps', icon: 'fa-solid fa-cloud', desc: 'Azure, Functions, CI/CD pipelines.' }
+      ];
+
+      const skillGroups = [
+        { title: 'Languages', items: ['C#', 'JavaScript', 'TypeScript', 'SQL'] },
+        { title: 'Frameworks', items: ['.NET', 'ASP.NET Core', 'Vue.js'] }
+      ];
+
+      const skillBars = [
+        { label: 'Backend / .NET', level: 90 },
+        { label: 'Cloud / Azure', level: 85 }
+      ];
+
+      const experiences = [{
+        role: 'Full Stack .NET Developer', company: 'Accenture', client: 'altafiber',
+        period: 'Nov 2022 – Present', location: 'Hyderabad',
+        bullets: ['Developed 10+ REST API integrations.', 'Built Azure Function Apps.']
+      }];
+
+      const projects = [
+        { name: 'Order Cancellation', emoji: '🧾', desc: 'Telecom order management module.', tech: ['.NET', 'Vue.js', 'Azure'] }
+      ];
+
+      const contactCards = [
+        { label: 'Email', icon: 'fa-solid fa-envelope', value: 'madimi.spandana@gmail.com' }
+      ];
+
+      const form = reactive({ name: '', email: '', message: '' });
+
+      const sendMessage = () => { alert('Message sent successfully!'); };
+      const downloadResume = () => { alert('Downloading resume...'); };
+
+      watch(activeTab, async () => {
+        await nextTick();
+        document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+        if (activeTab.value === 'skills') {
+          skillBarsAnimated.value = false;
+          setTimeout(() => { skillBarsAnimated.value = true; }, 100);
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      onMounted(() => {
+        const fullGreeting = "Hi, I'm Spandana 👋";
+        let i = 0;
+        const interval = setInterval(() => {
+          typedText.value = fullGreeting.slice(0, i + 1);
+          i++;
+          if (i >= fullGreeting.length) {
+            clearInterval(interval);
+            setTimeout(() => { typewriterActive.value = false; }, 1000);
+          }
+        }, 100);
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      });
+
+      return {
+        activeTab, year, typedText, typewriterActive, skillBarsAnimated,
+        tabs, contactInfo, socials, stats, whatIDo, skillGroups,
+        skillBars, experiences, projects, contactCards, form,
+        sendMessage, downloadResume
+      };
+    }
+  }).mount('#app');
+</script>
+</body>
+</html>
